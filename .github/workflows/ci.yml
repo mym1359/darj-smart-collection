@@ -30,3 +30,4 @@ jobs:
         PYTHONPATH: .
       run: |
         pytest tests/
+# Triggered manually for test
