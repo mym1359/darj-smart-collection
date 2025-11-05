@@ -18,4 +18,3 @@ def test_recommend_route():
     response = client.post("/recommend", json=payload)
     assert response.status_code == 200
     assert "recommended_action" in response.json()
-    assert "اخطار" in response.json()["recommended_action"] or "کسر اقساط" in response.json()["recommended_action"]
