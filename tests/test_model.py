@@ -29,3 +29,9 @@ def test_recommend_action_no_delay():
     }
     result = recommend_action(features)
     assert "خوش‌قول" in result
+    
+from app.models.repayment_model import predict_action
+
+def test_predict_action_basic():
+    result = predict_action(30, 2, True, False)
+    assert result in ["Call", "SMS", "Legal", "Wait"]

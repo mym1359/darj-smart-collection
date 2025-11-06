@@ -1,27 +1,22 @@
-def predict_action(delay_days: int, contact_count: int, promise_given: bool, promise_kept: bool) -> str:
+def predict_action(delay_days, contact_count, promise_given, promise_kept):
     """
-    Predict recommended action based on repayment behavior.
+    Predict the recommended action for debt collection based on customer behavior.
 
     Parameters:
-    - delay_days: تعداد روزهای تأخیر
-    - contact_count: تعداد تماس‌ها
-    - promise_given: آیا مشتری قول داده؟
-    - promise_kept: آیا مشتری به قولش عمل کرده؟
+    - delay_days (int): Number of days the payment is delayed
+    - contact_count (int): Number of times the customer has been contacted
+    - promise_given (bool): Whether the customer has promised to pay
+    - promise_kept (bool): Whether the customer has kept the promise
 
     Returns:
-    - recommended_action: متن پیشنهادی اقدام
+    - str: Recommended action ("Call", "SMS", "Legal", "Wait")
     """
 
     if delay_days > 90 and not promise_kept:
-        return "ارجاع به پیگیری حقوقی"
-
-    if promise_given and not promise_kept:
-        return "تماس مجدد با تأکید بر تعهد"
-
-    if delay_days < 30 and contact_count < 2:
-        return "ادامه پیگیری تلفنی"
-
-    if delay_days < 15 and promise_kept:
-        return "مشتری خوش‌قول، نیازی به اقدام نیست"
-
-    return "بررسی مجدد وضعیت و تصمیم‌گیری توسط کارشناس"
+        return "Legal"
+    elif delay_days > 30 and contact_count >= 3 and promise_given and not promise_kept:
+        return "Call"
+    elif delay_days <= 30 and not promise_given:
+        return "SMS"
+    else:
+        return "Wait"

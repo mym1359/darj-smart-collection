@@ -49,3 +49,31 @@ with st.expander("ℹ️ درباره پروژه"):
     st.markdown("""
     این پروژه با استفاده از FastAPI و Streamlit طراحی شده تا به بانک‌ها در تصمیم‌گیری هوشمندانه برای وصول مطالبات کمک کند.
     """)
+
+
+from app.db.database import SessionLocal
+from app.db.models import RepaymentRecord
+
+def load_records():
+    db = SessionLocal()
+    records = db.query(RepaymentRecord).order_by(RepaymentRecord.id.desc()).all()
+    db.close()
+    return records
+
+with st.expander("📋 نمایش سوابق ثبت‌شده"):
+    records = load_records()
+    if records:
+        st.write("آخرین اقدامات ثبت‌شده:")
+        data = [
+            {
+                "تأخیر (روز)": r.delay_days,
+                "تعداد تماس": r.contact_count,
+                "قول داده؟": "بله" if r.promise_given else "خیر",
+                "قول را عمل کرده؟": "بله" if r.promise_kept else "خیر",
+                "پیشنهاد سیستم": r.recommended_action
+            }
+            for r in records
+        ]
+        st.table(data)
+    else:
+        st.info("هنوز هیچ رکوردی ثبت نشده است.")

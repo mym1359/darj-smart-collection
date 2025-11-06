@@ -2,6 +2,8 @@
 
 هوشمندسازی فرآیند وصول مطالبات بانکی با تحلیل رفتار مشتری و پیشنهاد مسیر بهینه وصول با استفاده از هوش مصنوعی
 
+با استفاده از Streamlit + FastAPI + SQLite
+
 ---
 
 ## 🧠 Project Overview
@@ -21,6 +23,15 @@ This project is based on real-world experience from Maskan Bank (Iran) and demon
 - **Branch & User Dashboards**: Visualizes collection performance and KPIs
 - **Letter Generation**: Automates official warnings and legal notices
 
+✅ Features
+• 	Interactive Streamlit dashboard for smart debt collection decisions
+• 	FastAPI backend for clean separation of logic and scalable API integration
+• 	SQLite database for storing prediction records locally
+• 	Modular architecture with clear separation of model, API, and UI layers
+• 	Ready for PostgreSQL migration for production-grade deployments
+• 	Expandable design for integrating machine learning models or external banking APIs
+• 	Multilingual support (Persian/English) for broader accessibility
+• 	Clean and reproducible codebase suitable for GitHub portfolio and migration documentation
 ---
 
 ## 🛠️ Technologies Used
@@ -40,17 +51,17 @@ This project is based on real-world experience from Maskan Bank (Iran) and demon
 
 ## 📦 Installation
 
-```bash
+
 git clone https://github.com/mym1359/darj-smart-collection.git
 cd darj-smart-collection
 python -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 
-🧪 Run Model Training
+## 🧪 Run Model Training
 python app/models/repayment_model.py
 
-📊 Run API Server (FastAPI)
+## 📊 Run API Server (FastAPI)
 uvicorn app.main:app --reload
 
 🌍 Migration Impact
@@ -64,12 +75,13 @@ It is designed to support professional recognition and migration goals by highli
 📈 Roadmap
 • 	[x] Initial model training
 • 	[x] Action recommender system
-• 	[ ] FastAPI endpoints for user actions
-• 	[ ] Frontend dashboard with React
-• 	[ ] NLP-based promise tracking
-• 	[ ] Deployment on cloud (Docker + CI/CD)
+• 	[x] FastAPI endpoints for user actions
+• 	[x] Frontend dashboard with React
+• 	[x] NLP-based promise tracking
+• 	[x] Deployment on cloud (Docker + CI/CD)
 
 🤝 Contact
 Developed by Mohammad Yadollah Moghadam
 Banking Expert & Web Developer at Maskan Bank
 Specialized in AI-driven financial solution
+https://www.linkedin.com/in/mym1980/
