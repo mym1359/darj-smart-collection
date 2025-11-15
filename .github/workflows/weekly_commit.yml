@@ -2,8 +2,8 @@ name: Weekly Commit
 
 on:
   schedule:
-    - cron: '0 8 * * 1'  # هر دوشنبه ساعت 08:00 UTC
-  workflow_dispatch:     # امکان اجرای دستی هم فراهم می‌کنه
+    - cron: '0 8 * * 1'
+  workflow_dispatch:
 
 jobs:
   commit:
@@ -14,12 +14,16 @@ jobs:
 
       - name: Set Git identity
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "Auto Commit Bot"
+          git config user.email "bot@darj.local"
 
       - name: Make dummy commit
         run: |
           echo "Last updated: $(date)" > .last_updated.txt
           git add .last_updated.txt
-          git commit -m "🤖 Weekly heartbeat commit"
-          git push
+          git commit -m "🤖 Weekly heartbeat commit" || echo "Nothing to commit"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
