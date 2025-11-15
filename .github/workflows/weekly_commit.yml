@@ -1,0 +1,25 @@
+name: Weekly Commit
+
+on:
+  schedule:
+    - cron: '0 8 * * 1'  # هر دوشنبه ساعت 08:00 UTC
+  workflow_dispatch:     # امکان اجرای دستی هم فراهم می‌کنه
+
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set Git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Make dummy commit
+        run: |
+          echo "Last updated: $(date)" > .last_updated.txt
+          git add .last_updated.txt
+          git commit -m "🤖 Weekly heartbeat commit"
+          git push
