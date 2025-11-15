@@ -12,3 +12,4 @@ class RepaymentRecord(Base):
     promise_given = Column(Boolean)
     promise_kept = Column(Boolean)
     recommended_action = Column(String)
+    outcome = Column(Boolean)  # True = موفق، False = ناموفق

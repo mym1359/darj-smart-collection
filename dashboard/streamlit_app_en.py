@@ -1,11 +1,15 @@
 import streamlit as st
+st.set_page_config(page_title="Darj Smart Collection - Analytics", layout="wide")
+
 import requests
 import sys
 import os
+import pandas as pd
+import sqlite3
+import altair as alt
+import datetime
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-st.set_page_config(page_title="Darj Smart Collection", page_icon="📊")
 
 st.title("📊 Darj Smart Collection Dashboard")
 st.markdown("This dashboard helps you choose the best debt collection action based on customer behavior.")
@@ -76,3 +80,67 @@ with st.expander("ℹ️ About this project"):
     This project uses FastAPI and Streamlit to support smart decision-making in banking debt collection.
     It is modular, scalable, and ready for production deployment.
     """)
+
+# 📅 Filter by date
+st.sidebar.header("📅 Filter by date")
+days = st.sidebar.slider("Show records from last N days", 1, 180, 30)
+cutoff_date = datetime.datetime.now() - datetime.timedelta(days=days)
+
+# 📊 Recommended Action Distribution
+st.title("📊 Recommended Action Distribution")
+
+# اتصال به دیتابیس
+conn = sqlite3.connect("repayment.db")
+query = "SELECT recommended_action FROM repayment_records"
+df = pd.read_sql(query, conn)
+
+if df.empty:
+    st.warning("No data available yet. Submit predictions via the API to populate the dashboard.")
+else:
+    # شمارش اقدامات
+    action_counts = df["recommended_action"].value_counts().reset_index()
+    action_counts.columns = ["Action", "Count"]
+
+    # نمودار ستونی
+    chart = alt.Chart(action_counts).mark_bar().encode(
+        x=alt.X("Action", sort="-y"),
+        y="Count",
+        color="Action",
+        tooltip=["Action", "Count"]
+    ).properties(
+        width=600,
+        height=400,
+        title=f"Distribution of Recommended Actions (Last {days} Days)"
+    )
+
+    st.altair_chart(chart, use_container_width=True)
+    
+# 📈 Success Rate by Action
+st.subheader("📈 Success Rate by Action")
+
+query_success = """
+SELECT recommended_action, COUNT(*) as total,
+SUM(CASE WHEN outcome = 1 THEN 1 ELSE 0 END) as success
+FROM repayment_records
+GROUP BY recommended_action
+"""
+df_success = pd.read_sql(query_success, conn)
+
+if df_success.empty:
+    st.info("No success data available yet.")
+else:
+    df_success["Success Rate (%)"] = (df_success["success"] / df_success["total"] * 100).round(1)
+
+    chart_success = alt.Chart(df_success).mark_bar().encode(
+        x=alt.X("recommended_action", title="Action"),
+        y=alt.Y("Success Rate (%)"),
+        color="recommended_action",
+        tooltip=["recommended_action", "Success Rate (%)", "total", "success"]
+    ).properties(
+        width=600,
+        height=400,
+        title="Success Rate by Recommended Action"
+    )
+
+    st.altair_chart(chart_success, use_container_width=True)
+    

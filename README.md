@@ -32,6 +32,8 @@ This project is based on real-world experience from Maskan Bank (Iran) and demon
 • 	Expandable design for integrating machine learning models or external banking APIs
 • 	Multilingual support (Persian/English) for broader accessibility
 • 	Clean and reproducible codebase suitable for GitHub portfolio and migration documentation
+•   XGBoost-based ML model for smarter action prediction
+•   `/predict_ml` endpoint for AI-powered recommendations
 ---
 
 ## 🛠️ Technologies Used
